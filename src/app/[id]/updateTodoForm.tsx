@@ -1,13 +1,27 @@
 "use client";
 
 import { useActionState } from "react";
-import { addTodo } from "../actions/todoActions";
+import { toggleTodoComplete, updateTodo } from "../actions/todoActions";
+import DeleteButton from "@/components/deleteTodo";
+import { useRouter } from "next/navigation";
 
-export default function CreatePage() {
-  const [state, formAction, isPending] = useActionState(addTodo, {
-    error: null,
-    success: false,
-  });
+export default function UpdateTodoForm({
+  _id,
+  title,
+  description,
+  isComplete,
+}: {
+  _id: string;
+  title: string;
+  description: string;
+  isComplete: boolean;
+}) {
+  const [state, formFunctionWithId, isPending] = useActionState(
+    updateTodo.bind(null, _id),
+    { error: null, success: false },
+  );
+
+  const router = useRouter();
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-slate-50 to-white px-6 py-12">
@@ -16,26 +30,47 @@ export default function CreatePage() {
         <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-xl">
           {/* Header */}
           <div className="mb-8">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700">
-              <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
-              New Todo
+            <div
+              className={`
+                mb-5
+                inline-flex
+                items-center
+                gap-2
+                rounded-full
+                px-4
+                py-2
+                text-sm
+                font-semibold
+                ${
+                  isComplete
+                    ? "bg-green-100 text-green-700"
+                    : "bg-amber-100 text-amber-700"
+                }
+              `}
+            >
+              <span
+                className={`
+                  h-2.5
+                  w-2.5
+                  rounded-full
+                  ${isComplete ? "bg-green-500" : "bg-amber-500"}
+                `}
+              />
+
+              {isComplete ? "Completed" : "Pending"}
             </div>
 
             <h1 className="text-4xl font-bold tracking-tight text-slate-900">
-              Create Todo
+              Todo Details
             </h1>
 
-            <p
-              className={`mt-3 ${state.error ? "text-red-500" : "text-slate-500"}`}
-            >
-              {state.error
-                ? state.error
-                : "Add a new task and stay organized throughout your day ✨"}
+            <p className="mt-3 text-slate-500">
+              Update your task details and manage status easily.
             </p>
           </div>
 
           {/* Form */}
-          <form action={formAction} className="space-y-6">
+          <form action={formFunctionWithId} className="space-y-6">
             {/* Title */}
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -44,7 +79,7 @@ export default function CreatePage() {
 
               <input
                 type="text"
-                name="title"
+                defaultValue={title}
                 placeholder="Enter todo title"
                 required
                 className="
@@ -58,7 +93,6 @@ export default function CreatePage() {
                   text-slate-900
                   outline-none
                   transition
-                  placeholder:text-slate-400
                   focus:border-blue-500
                   focus:ring-4
                   focus:ring-blue-100
@@ -73,9 +107,8 @@ export default function CreatePage() {
               </label>
 
               <textarea
-                name="description"
+                defaultValue={description}
                 rows={6}
-                required
                 placeholder="Write something about this todo..."
                 className="
                   w-full
@@ -89,7 +122,6 @@ export default function CreatePage() {
                   text-slate-900
                   outline-none
                   transition
-                  placeholder:text-slate-400
                   focus:border-blue-500
                   focus:ring-4
                   focus:ring-blue-100
@@ -97,12 +129,62 @@ export default function CreatePage() {
               />
             </div>
 
+            {/* Toggle */}
+            <div
+              className="
+                flex
+                items-center
+                justify-between
+                rounded-2xl
+                border
+                border-slate-200
+                bg-slate-50
+                px-5
+                py-4
+              "
+            >
+              <div>
+                <p className="font-semibold text-slate-800">Task Status</p>
+
+                <p className="text-sm text-slate-500">
+                  Mark this task as completed or pending
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => toggleTodoComplete(_id)}
+                className={`
+                  rounded-full
+                  px-5
+                  py-2.5
+                  text-sm
+                  font-semibold
+                  text-white
+                  transition
+                  hover:scale-105
+                  active:scale-95
+                  ${isComplete ? "bg-green-600" : "bg-amber-500"}
+                `}
+              >
+                {isComplete ? "Completed" : "Pending"}
+              </button>
+            </div>
+
             {/* Footer */}
-            <div className="flex flex-wrap gap-4 border-t border-slate-200 pt-6">
-              {/* Submit */}
+            <div
+              className="
+                flex
+                flex-wrap
+                gap-4
+                border-t
+                border-slate-200
+                pt-6
+              "
+            >
+              {/* Save */}
               <button
                 type="submit"
-                disabled={isPending}
                 className="
                   rounded-2xl
                   bg-gradient-to-r
@@ -116,18 +198,18 @@ export default function CreatePage() {
                   shadow-lg
                   shadow-blue-200
                   transition
-                  duration-200
                   hover:-translate-y-1
                   hover:shadow-xl
                   active:scale-95
                 "
               >
-                {isPending ? "Creating..." : "Create Todo"}
+                Save Changes
               </button>
 
-              {/* Reset */}
+              {/* Home */}
               <button
-                type="reset"
+                type="button"
+                onClick={() => router.push("/")}
                 className="
                   rounded-2xl
                   border
@@ -143,8 +225,11 @@ export default function CreatePage() {
                   active:scale-95
                 "
               >
-                Clear
+                Back Home
               </button>
+
+              {/* Delete */}
+              <DeleteButton id={_id} />
             </div>
           </form>
         </div>

@@ -115,15 +115,12 @@ export default function Todo({ todo }: { todo: Todo }) {
         <div
           className="
             flex
-            flex-wrap
             items-center
-            gap-3
+            justify-around
           "
         >
           <ToggleButton id={todo._id} completed={todo.isComplete} />
-
           <DeleteButton id={todo._id} />
-
           <ViewDetails todo={todo} />
         </div>
       </div>
