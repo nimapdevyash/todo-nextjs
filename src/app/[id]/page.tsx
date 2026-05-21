@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import DeleteButton from "../components/deleteTodo";
+import DeleteButton from "../../components/deleteTodo";
 
 export default function TodoDetailsPage({
   params,

@@ -1,25 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { deleteTodo } from "../app/actions/todoActions";
 
 export default function DeleteButton({ id }: { id: string }) {
-  const router = useRouter();
-
-  async function handleDelete() {
-    const response = await fetch(`https://api.freeapi.app/api/v1/todos/${id}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to delete todo");
-    }
-
-    router.refresh();
-  }
-
   return (
     <button
-      onClick={handleDelete}
+      onClick={() => deleteTodo(id)}
       className="
         rounded-xl
         border

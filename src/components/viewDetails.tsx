@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Todo } from "../page";
+import { Todo } from "../app/page";
 
 export default function ViewDetails({ todo }: { todo: Todo }) {
   const router = useRouter();

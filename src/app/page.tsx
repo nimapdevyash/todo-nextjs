@@ -1,6 +1,6 @@
-import Button from "./components/createTodo";
-import Todo from "./components/todo";
-import TodosNotFound from "./components/todosNotFound";
+import Button from "../components/createTodo";
+import Todo from "../components/todo";
+import TodosNotFound from "../components/todosNotFound";
 
 export interface Todo {
   __v: number;

@@ -2,36 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { addTodo } from "../actions/todoActions";
 
 export default function CreatePage() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [completed, setCompleted] = useState(false);
-
-  const router = useRouter();
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const response = await fetch("https://api.freeapi.app/api/v1/todos/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        description,
-        completed,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to create todo");
-    }
-
-    router.push("/");
-  }
-
   return (
     <div
       style={{
@@ -79,8 +52,7 @@ export default function CreatePage() {
 
         {/* Form */}
         <form
-          onSubmit={handleSubmit}
-          method="POST"
+          action={addTodo}
           style={{
             display: "flex",
             flexDirection: "column",
@@ -102,8 +74,6 @@ export default function CreatePage() {
 
             <input
               type="text"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
               name="title"
               placeholder="Enter todo title"
               required
@@ -133,8 +103,6 @@ export default function CreatePage() {
             </label>
 
             <textarea
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
               name="description"
               placeholder="Write something about this todo..."
               rows={5}
@@ -149,39 +117,6 @@ export default function CreatePage() {
                 boxSizing: "border-box",
               }}
             />
-          </div>
-
-          {/* Checkbox */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              padding: "10px 0",
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={completed}
-              onChange={(event) => setCompleted(event.target.checked)}
-              name="completed"
-              style={{
-                width: "18px",
-                height: "18px",
-                accentColor: "#2563eb",
-                cursor: "pointer",
-              }}
-            />
-
-            <label
-              htmlFor="completed"
-              style={{
-                color: "#374151",
-                fontSize: "15px",
-              }}
-            >
-              Mark as completed
-            </label>
           </div>
 
           {/* Submit Button */}

@@ -1,4 +1,4 @@
-import { type Todo } from "../page";
+import { type Todo } from "../app/page";
 import DeleteButton from "./deleteTodo";
 import ToggleButton from "./toggleCompleteTodo";
 import ViewDetails from "./viewDetails";

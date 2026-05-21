@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { toggleTodoComplete } from "../app/actions/todoActions";
 
 export default function ToggleButton({
   id,
@@ -9,26 +9,9 @@ export default function ToggleButton({
   id: string;
   completed: boolean;
 }) {
-  const router = useRouter();
-
-  async function handleToggleComplete() {
-    const response = await fetch(
-      `https://api.freeapi.app/api/v1/todos/toggle/status/${id}`,
-      {
-        method: "PATCH",
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to toggle todo status");
-    }
-
-    router.refresh();
-  }
-
   return (
     <button
-      onClick={handleToggleComplete}
+      onClick={() => toggleTodoComplete(id)}
       className={`
         flex
         items-center
