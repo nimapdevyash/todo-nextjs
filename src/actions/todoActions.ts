@@ -1,16 +1,8 @@
 "use server";
 
-import { refresh } from "next/cache";
+import { addTodoSchema, idSchema } from "@/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import z, { success } from "zod";
-
-const addTodoSchema = z.object({
-  title: z.string().trim().nonempty(),
-  description: z.string().trim().nonempty(),
-});
-
-const idSchema = z.string().nonempty();
 
 export async function addTodo(previousState: unknown, formData: FormData) {
   const validatedData = addTodoSchema.safeParse({

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { addTodo } from "../actions/todoActions";
+import { addTodo } from "../../actions/todoActions";
 
 export default function CreatePage() {
   const [state, formAction, isPending] = useActionState(addTodo, {

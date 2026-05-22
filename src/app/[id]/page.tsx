@@ -1,9 +1,6 @@
-import { getTodoById } from "../actions/todoActions";
+import { getTodoById } from "../../actions/todoActions";
 import UpdateTodoForm from "./updateTodoForm";
-
-interface PageProps {
-  params: Promise<{ id: string }>;
-}
+import { type PageProps } from "@/interfaces";
 
 export default async function TodoDetailsPage({ params }: PageProps) {
   const { id } = await params;

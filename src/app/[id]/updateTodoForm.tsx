@@ -1,21 +1,17 @@
 "use client";
 
 import { useActionState } from "react";
-import { toggleTodoComplete, updateTodo } from "../actions/todoActions";
+import { toggleTodoComplete, updateTodo } from "../../actions/todoActions";
 import DeleteButton from "@/components/deleteTodo";
 import { useRouter } from "next/navigation";
+import { UpdateTodoFormProps } from "@/interfaces";
 
 export default function UpdateTodoForm({
   _id,
   title,
   description,
   isComplete,
-}: {
-  _id: string;
-  title: string;
-  description: string;
-  isComplete: boolean;
-}) {
+}: UpdateTodoFormProps) {
   const [state, formFunctionWithId, isPending] = useActionState(
     updateTodo.bind(null, _id),
     { error: null, success: false },

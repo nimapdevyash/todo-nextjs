@@ -1,10 +1,8 @@
 "use client";
 
-import z from "zod";
-import { deleteTodo } from "../app/actions/todoActions";
+import { deleteTodo } from "../actions/todoActions";
 import { useRouter } from "next/navigation";
-
-const idSchema = z.string().nonempty();
+import { idSchema } from "@/schema";
 
 export default function DeleteButton({ id }: { id: string }) {
   const router = useRouter();

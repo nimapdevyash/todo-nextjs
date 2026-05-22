@@ -1,11 +1,7 @@
 "use client";
 
+import { ErrorProps } from "@/interfaces";
 import React, { useEffect } from "react";
-
-interface ErrorProps {
-  error: Error & { digest?: string };
-  reset: () => void;
-}
 
 export default function GlobalError({ error, reset }: ErrorProps) {
   useEffect(() => {

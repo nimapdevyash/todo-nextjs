@@ -1,14 +1,9 @@
 "use client";
 
-import { toggleTodoComplete } from "../app/actions/todoActions";
+import { ToggleButtonProps } from "@/interfaces";
+import { toggleTodoComplete } from "../actions/todoActions";
 
-export default function ToggleButton({
-  id,
-  completed,
-}: {
-  id: string;
-  completed: boolean;
-}) {
+export default function ToggleButton({ id, completed }: ToggleButtonProps) {
   return (
     <button
       onClick={() => toggleTodoComplete(id)}

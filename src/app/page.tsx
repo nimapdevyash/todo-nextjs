@@ -1,16 +1,7 @@
+import { type Todo as TodoTypes } from "@/interfaces";
 import Button from "../components/createTodo";
-import Todo from "../components/todo";
 import TodosNotFound from "../components/todosNotFound";
-
-export interface Todo {
-  __v: number;
-  _id: string;
-  createdAt: Date;
-  description: string;
-  isComplete: boolean;
-  title: string;
-  updatedAt: Date;
-}
+import Todo from "@/components/todo";
 
 export default async function Home() {
   const response = await fetch("https://api.freeapi.app/api/v1/todos");
@@ -21,7 +12,9 @@ export default async function Home() {
 
   const { data: todos } = await response.json();
 
-  const completedTodos = todos.filter((todo: Todo) => todo.isComplete).length;
+  const completedTodos = todos.filter(
+    (todo: TodoTypes) => todo.isComplete,
+  ).length;
 
   const pendingTodos = todos.length - completedTodos;
 
@@ -87,7 +80,7 @@ export default async function Home() {
             <TodosNotFound />
           ) : (
             <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {todos.map((t: Todo) => (
+              {todos.map((t: TodoTypes) => (
                 <Todo key={t._id} todo={t} />
               ))}
             </ul>
