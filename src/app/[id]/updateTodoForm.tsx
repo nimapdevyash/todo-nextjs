@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useOptimistic, useTransition } from "react";
 import { toggleTodoComplete, updateTodo } from "../../actions/todoActions";
 import DeleteButton from "@/components/deleteTodo";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,13 @@ export default function UpdateTodoForm({
     updateTodo.bind(null, _id),
     { error: null, success: false },
   );
+
+  const [optimisticState, setOptimisticState] = useOptimistic(
+    isComplete,
+    (curentState: boolean, newState: boolean) => newState,
+  );
+
+  const [isPendingTransition, startTransition] = useTransition();
 
   const router = useRouter();
 
@@ -151,7 +158,12 @@ export default function UpdateTodoForm({
 
               <button
                 type="button"
-                onClick={() => toggleTodoComplete(_id)}
+                onClick={() =>
+                  startTransition(async () => {
+                    setOptimisticState(!optimisticState);
+                    await toggleTodoComplete(_id);
+                  })
+                }
                 className={`
                   rounded-full
                   px-5
@@ -162,10 +174,10 @@ export default function UpdateTodoForm({
                   transition
                   hover:scale-105
                   active:scale-95
-                  ${isComplete ? "bg-green-600" : "bg-amber-500"}
+                  ${optimisticState ? "bg-green-600" : "bg-amber-500"}
                 `}
               >
-                {isComplete ? "Completed" : "Pending"}
+                {optimisticState ? "Completed" : "Pending"}
               </button>
             </div>
 
