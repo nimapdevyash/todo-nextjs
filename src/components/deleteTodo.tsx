@@ -1,11 +1,29 @@
 "use client";
 
+import z from "zod";
 import { deleteTodo } from "../app/actions/todoActions";
+import { useRouter } from "next/navigation";
+
+const idSchema = z.string().nonempty();
 
 export default function DeleteButton({ id }: { id: string }) {
+  const router = useRouter();
+
+  async function handleDelete() {
+    const validatedId = idSchema.safeParse(id);
+
+    if (!validatedId.success) {
+      throw new Error("Invalid todo id");
+    }
+
+    await deleteTodo(validatedId.data);
+
+    router.push("/");
+  }
+
   return (
     <button
-      onClick={() => deleteTodo(id)}
+      onClick={handleDelete}
       className="
         rounded-xl
         border

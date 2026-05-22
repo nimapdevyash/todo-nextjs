@@ -49,24 +49,13 @@ export async function addTodo(previousState: unknown, formData: FormData) {
 }
 
 export async function deleteTodo(id: string) {
-  const validatedId = idSchema.safeParse(id);
-
-  if (!validatedId.success) {
-    throw new Error("Invalid todo id");
-  }
-
-  const response = await fetch(
-    `https://api.freeapi.app/api/v1/todos/${validatedId.data}`,
-    {
-      method: "DELETE",
-    },
-  );
+  const response = await fetch(`https://api.freeapi.app/api/v1/todos/${id}`, {
+    method: "DELETE",
+  });
 
   if (!response.ok) {
     throw new Error("Failed to delete todo");
   }
-
-  redirect("/");
 }
 
 export async function toggleTodoComplete(id: string) {
