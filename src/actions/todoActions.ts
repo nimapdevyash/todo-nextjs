@@ -54,7 +54,10 @@ export async function toggleTodoComplete(id: string) {
   const validatedId = idSchema.safeParse(id);
 
   if (!validatedId.success) {
-    throw new Error("Invalid todo id");
+    return {
+      error: "Invalid todo id",
+      success: false,
+    };
   }
 
   const response = await fetch(
@@ -65,7 +68,10 @@ export async function toggleTodoComplete(id: string) {
   );
 
   if (!response.ok) {
-    throw new Error("Failed to toggle todo status");
+    return {
+      error: "Failed to toggle todo status",
+      success: false,
+    };
   }
 
   revalidatePath("/");
