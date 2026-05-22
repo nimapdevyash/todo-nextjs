@@ -1,6 +1,6 @@
 "use server";
 
-import { addTodoSchema, idSchema } from "@/schema";
+import { addTodoSchema, idSchema, updateTodoSchema } from "@/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -76,22 +76,32 @@ export async function updateTodo(
   previousState: unknown,
   form: FormData,
 ) {
-  const title = form.get("title") as string;
-  const description = form.get("description") as string;
-
-  console.log("title: ", title);
-  console.log("description: ", description);
-
-  const response = await fetch(`https://api.freeapi.app/api/v1/todos/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      title,
-      description,
-    }),
+  const validatedData = updateTodoSchema.safeParse({
+    id,
+    title: form.get("title"),
+    description: form.get("description"),
   });
+
+  if (!validatedData.success) {
+    return {
+      error: "Invalid todo data",
+      success: false,
+    };
+  }
+
+  const response = await fetch(
+    `https://api.freeapi.app/api/v1/todos/${validatedData.data.id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: validatedData.data.title,
+        description: validatedData.data.description,
+      }),
+    },
+  );
 
   if (!response.ok) {
     return {

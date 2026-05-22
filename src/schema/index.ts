@@ -5,4 +5,8 @@ export const addTodoSchema = z.object({
   description: z.string().trim().nonempty(),
 });
 
-export const idSchema = z.string().nonempty();
+export const updateTodoSchema = addTodoSchema.extend({
+  id: z.string().trim().nonempty(),
+});
+
+export const idSchema = updateTodoSchema.shape.id;
