@@ -79,6 +79,7 @@ export default function UpdateTodoForm({
 
               <input
                 type="text"
+                name="title"
                 defaultValue={title}
                 placeholder="Enter todo title"
                 required
@@ -108,6 +109,7 @@ export default function UpdateTodoForm({
 
               <textarea
                 defaultValue={description}
+                name="description"
                 rows={6}
                 placeholder="Write something about this todo..."
                 className="
@@ -203,7 +205,7 @@ export default function UpdateTodoForm({
                   active:scale-95
                 "
               >
-                Save Changes
+                {isPending ? "Updating..." : "Save Changes"}
               </button>
 
               {/* Home */}

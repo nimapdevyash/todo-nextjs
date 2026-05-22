@@ -98,6 +98,9 @@ export async function updateTodo(
   const title = form.get("title") as string;
   const description = form.get("description") as string;
 
+  console.log("title: ", title);
+  console.log("description: ", description);
+
   const response = await fetch(`https://api.freeapi.app/api/v1/todos/${id}`, {
     method: "PATCH",
     headers: {
